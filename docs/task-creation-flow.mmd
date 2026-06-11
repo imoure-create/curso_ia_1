@@ -1,0 +1,48 @@
+flowchart TD
+  A[Entrada a la app] --> B[TasksPage]
+  B --> C[MainLayout]
+  C --> D[TaskListSection]
+  D --> E{Hay tareas?}
+  E -->|Si| F[TaskList]
+  E -->|No| G[EmptyTaskState]
+  F --> H[Fab: Crear tarea]
+  G --> H
+  H --> I[TaskFormDialog: Nueva tarea]
+
+  I --> J[TaskForm]
+  J --> K[Campo: titulo]
+  J --> L[Campo: descripcion]
+  K --> M{Titulo valido?}
+  L --> N{Descripcion suficiente?}
+  M -->|No| O[Mostrar FormHelperText]
+  O --> J
+  N -->|No| P[Permitir guardar sin ICE o pedir descripcion]
+  P --> J
+  M -->|Si| Q[Boton: Calcular ICE con IA]
+  N -->|Si| Q
+
+  Q --> R[IceSuggestionPanel: Loading]
+  R --> S[aiIceService.estimateIce]
+  S --> T{Respuesta valida?}
+  T -->|No| U[Alert: No se pudo calcular ICE]
+  U --> V[Acciones: Reintentar o editar manualmente]
+  V --> Q
+  V --> W[IceManualEditor]
+
+  T -->|Si| X[IceSuggestionPanel: Sugerencia IA]
+  X --> Y[Mostrar impacto, confianza, facilidad]
+  X --> Z[Mostrar explicacion IA]
+  Y --> AA{Usuario acepta sugerencia?}
+  Z --> AA
+  AA -->|Edita valores| W
+  W --> AB[Recalcular IceScore]
+  AB --> AC[Vista previa de prioridad]
+  AA -->|Acepta| AC
+
+  AC --> AD{Guardar tarea?}
+  AD -->|No| J
+  AD -->|Si| AE[Crear Task en estado pendiente]
+  AE --> AF[Cerrar TaskFormDialog]
+  AF --> AG[Mostrar Snackbar: Tarea creada]
+  AG --> AH[TaskList ordenable por ICE]
+  AH --> AI[TaskItem confirmado]

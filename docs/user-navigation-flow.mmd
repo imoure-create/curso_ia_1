@@ -1,0 +1,48 @@
+flowchart TD
+  APP[App] --> LAYOUT[MainLayout]
+  LAYOUT --> ROUTES[AppRoutes]
+
+  ROUTES --> HOME["/"]
+  HOME --> TASKS[TasksPage]
+
+  TASKS --> HEADER[AppHeader]
+  TASKS --> TOOLBAR[TaskToolbar]
+  TASKS --> LIST[TaskListSection]
+  TASKS --> FORM[TaskFormDialog]
+  TASKS --> DETAIL[TaskDetailDialog]
+
+  HEADER --> TITLE[Nombre de la app]
+  HEADER --> SUMMARY[Resumen ICE]
+
+  TOOLBAR --> FILTER[TaskStatusFilter]
+  TOOLBAR --> SORT[TaskSortSelect]
+  TOOLBAR --> CREATE[CreateTaskButton]
+
+  LIST --> EMPTY[EmptyTaskState]
+  LIST --> TASKLIST[TaskList]
+  TASKLIST --> ITEM[TaskItem]
+
+  ITEM --> VIEW[Ver detalle]
+  ITEM --> EDIT[Editar tarea]
+  ITEM --> TOGGLE[Completar/Reabrir]
+  ITEM --> DELETE[Eliminar]
+
+  CREATE --> FORM
+  EDIT --> FORM
+  VIEW --> DETAIL
+
+  FORM --> TASKFORM[TaskForm]
+  TASKFORM --> BASIC[TaskBasicFields]
+  TASKFORM --> ICEPANEL[IceSuggestionPanel]
+  TASKFORM --> MANUAL[IceManualEditor]
+  TASKFORM --> ACTIONS[TaskFormActions]
+
+  DETAIL --> DETAILSUMMARY[TaskSummary]
+  DETAIL --> ICESUMMARY[IceScoreSummary]
+  DETAIL --> DETAILACTIONS[TaskDetailActions]
+
+  ACTIONS --> LIST
+  DETAILACTIONS --> LIST
+
+  ROUTES --> NOTFOUND["*"]
+  NOTFOUND --> HOME
